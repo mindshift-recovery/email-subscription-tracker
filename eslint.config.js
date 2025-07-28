@@ -7,7 +7,13 @@ module.exports = tseslint.config(
   ...tseslint.configs.recommended,
   prettierConfig,
   {
-    ignores: ["node_modules/**", "dist/**", "build/**", "*.js"],
+    ignores: [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "utils/**/*.js",
+      "supabase/**",
+    ],
   },
   {
     rules: {

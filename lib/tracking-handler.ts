@@ -1,12 +1,10 @@
-import { Pool } from "pg";
 import { verifyAndDecodeToken } from "./hmac-verifier";
+import { supabase } from "./supabase";
 import type { Context } from "../types/global";
 
 const SECRET = process.env.SECRET_KEY!;
 const REDIRECT_URL = process.env.REDIRECT_URL!;
 const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_URL!;
-
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 export default async function handler(
   _req: Request,
@@ -26,10 +24,12 @@ export default async function handler(
   try {
     const email = verifyAndDecodeToken(token, SECRET);
 
-    await pool.query("INSERT INTO clicks (email, action) VALUES ($1, $2)", [
-      email,
-      action,
-    ]);
+    const { error } = await supabase.from("clicks").insert({ email, action });
+
+    if (error) {
+      console.error("Database error:", error);
+      return new Response("Internal Server Error", { status: 500 });
+    }
 
     const redirectUrl = action === "keep" ? REDIRECT_URL : UNSUBSCRIBE_URL;
 

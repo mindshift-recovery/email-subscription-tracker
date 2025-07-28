@@ -3,14 +3,20 @@
   "version": "1.0.0",
   "license": "ISC",
   "scripts": {
-    "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint . --ext .ts --fix",
+    "lint": "eslint \"**/*.ts\"",
+    "lint:fix": "eslint \"**/*.ts\" --fix",
     "format": "prettier --write \"**/*.{ts,js,json,md}\"",
     "format:check": "prettier --check \"**/*.{ts,js,json,md}\"",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run lint && npm run format:check"
+    "check": "npm run typecheck && npm run lint && npm run format:check",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:reset": "npx supabase db reset",
+    "supabase:migrate": "npx supabase db push",
+    "setup:local": "node utils/setup-local-db.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.53.0",
     "dotenv": "^17.2.1",
     "pg": "^8.16.3"
   },
@@ -23,6 +29,7 @@
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2",
+    "supabase": "^2.31.8",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
     "vercel": "^44.6.3"
