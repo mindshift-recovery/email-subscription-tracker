@@ -12,13 +12,15 @@ export default async function handler(
   action: "keep" | "unsubscribe"
 ) {
   if (!context?.params?.token) {
-    return new Response("Bad Request: Missing token", { status: 400 });
+    console.error("Missing token in request");
+    return Response.redirect(UNSUBSCRIBE_URL, 302);
   }
 
   const token = context.params.token;
 
   if (typeof token !== "string" || token.trim().length === 0) {
-    return new Response("Bad Request: Invalid token format", { status: 400 });
+    console.error("Invalid token format");
+    return Response.redirect(UNSUBSCRIBE_URL, 302);
   }
 
   try {
@@ -28,13 +30,14 @@ export default async function handler(
 
     if (error) {
       console.error("Database error:", error);
-      return new Response("Internal Server Error", { status: 500 });
+      return Response.redirect(UNSUBSCRIBE_URL, 302);
     }
 
     const redirectUrl = action === "keep" ? REDIRECT_URL : UNSUBSCRIBE_URL;
 
     return Response.redirect(redirectUrl, 302);
-  } catch {
-    return new Response("Invalid token", { status: 403 });
+  } catch (err) {
+    console.error("Token verification failed:", err);
+    return Response.redirect(UNSUBSCRIBE_URL, 302);
   }
 }

@@ -17,18 +17,23 @@ function generateToken(email, secret) {
   return `${payload}.${signature}`;
 }
 
-// Generate a test token
-const email = "test@example.com";
+// Get email from command line argument or use default
+const email = process.argv[2] || "test@example.com";
 const secret = process.env.SECRET_KEY;
+const domain = process.env.APP_DOMAIN || "http://localhost:3000";
 
 if (!secret) {
-  console.error("ERROR: SECRET_KEY not found in .env.local");
+  console.error("ERROR: SECRET_KEY not found in .env");
   process.exit(1);
 }
 
 const token = generateToken(email, secret);
 
-console.log("Test email:", email);
-console.log("Secret key:", secret);
+console.log("Email:", email);
 console.log("Generated token:", token);
-console.log("Test URL: http://localhost:3000/k/" + token);
+console.log("");
+console.log("Keep subscription link:");
+console.log(`${domain}/k/${token}`);
+console.log("");
+console.log("Unsubscribe link:");
+console.log(`${domain}/u/${token}`);
