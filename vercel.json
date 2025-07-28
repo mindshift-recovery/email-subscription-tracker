@@ -1,0 +1,6 @@
+{
+  "rewrites": [
+    { "source": "/k/:token", "destination": "/api/k/:token" },
+    { "source": "/u/:token", "destination": "/api/u/:token" }
+  ]
+}
