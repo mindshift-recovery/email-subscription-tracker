@@ -9,7 +9,7 @@ const UNSUBSCRIBE_URL = process.env.UNSUBSCRIBE_URL!;
 export default async function handler(
   _req: Request,
   context: Context,
-  action: "keep" | "unsubscribe"
+  action: "keep" | "unsubscribe" | "bot_trap"
 ) {
   if (!context?.params?.token) {
     console.error("Missing token in request");
